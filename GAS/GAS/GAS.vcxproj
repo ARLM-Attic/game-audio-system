@@ -36,7 +36,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(OPENAL_INCLUDE);$(FREEALUT_INCLUDE);$(LIBOGG_INCLUDE);$(EAX_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENAL_SDK32);$(FREEALUT_SDK);$(LIBOGG_SDK);$(EAX_SDK);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -44,6 +47,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenAL32.lib;alut.lib;libogg_static.lib;eax.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -60,6 +64,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioObject.h" />
+    <ClInclude Include="AudioObjectsPool.h" />
+    <ClInclude Include="GameAudioWrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AudioObjectsPool.cpp" />
+    <ClCompile Include="GameAudioWrapper.cpp" />
+    <ClCompile Include="MainTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
