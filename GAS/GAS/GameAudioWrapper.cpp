@@ -135,7 +135,7 @@ bool GameAudioWrapper::IsLoadedSound(std::string& iSoundName)const
 		return true;
 	return false;
 }
-unsigned int GameAudioWrapper::CreateSource(std::string& iFileName, std::string& iFormat)
+int GameAudioWrapper::CreateSource(std::string& iFileName, std::string& iFormat)
 {
 	
 	
@@ -146,7 +146,7 @@ unsigned int GameAudioWrapper::CreateSource(std::string& iFileName, std::string&
 	}
 
 	alGetError();
-	unsigned int bufferId = mBufferNames[name];
+	int bufferId = mBufferNames[name];
 	int sourceId = GetFreeSource();
 
 	if (sourceId == -1)
@@ -158,7 +158,7 @@ unsigned int GameAudioWrapper::CreateSource(std::string& iFileName, std::string&
 
 	if (CheckErrors("GameAudioWrapper::CreateSource"))
 		throw;
-	return  mAudioSources[sourceId];
+	return  sourceId;
 }
 void GameAudioWrapper::LoadSound(std::string& iFileName, std::string& iFormat)
 {
@@ -308,11 +308,11 @@ bool GameAudioWrapper::Play(unsigned int iSoundId)const
  
  
 	ALint state ;
-	alSourcePlay(iSoundId);
+	alSourcePlay(mAudioSources[iSoundId]);
 	// This is a busy wait loop but should be good enough for example purpose
 	do {
 		// Query the state of the souce
-		alGetSourcei(iSoundId, AL_SOURCE_STATE, &state);
+		alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
 	} while (state != AL_STOPPED);
 	
 	if ( CheckErrors( "playAudio::alSourcePlay: ") )

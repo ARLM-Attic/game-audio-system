@@ -10,7 +10,7 @@
 #include <bitset>
 #include <unordered_map>
 
-#include "AudioObjectsPool.h"
+
 
 namespace GAS
 {
@@ -22,7 +22,7 @@ public:
 	~GameAudioWrapper(void);
 
 	void LoadSound(std::string& iFileName, std::string& iFormat);
-	unsigned int CreateSource(std::string& iFileName, std::string& iFormat);
+	int CreateSource(std::string& iFileName, std::string& iFormat);
 	bool IsFormatSupported(std::string& iFormat) const;
 	bool IsLoadedSound(std::string& iSoundName)const;
 	bool Play(unsigned int iSoundId)const;
@@ -56,7 +56,7 @@ private:
 	unsigned int mAudioSources[ MAX_AUDIO_SOURCES ];
 	std::bitset<MAX_AUDIO_BUFFERS> mUsedSources;
 
-	typedef std::unordered_map<std::string, unsigned int> BufferNameMap;
+	typedef std::unordered_map<std::string, int> BufferNameMap;
 	BufferNameMap mBufferNames;
 
 	//------ EAX extensions --------------
