@@ -21,12 +21,6 @@
     <ClInclude Include="GameAudioWrapper.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="AudioObject.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioObjectsPool.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameAudioWrapper.cpp">
@@ -34,9 +28,6 @@
     </ClCompile>
     <ClCompile Include="MainTest.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioObjectsPool.cpp">
-      <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

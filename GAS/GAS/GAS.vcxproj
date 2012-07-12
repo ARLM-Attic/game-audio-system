@@ -37,8 +37,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(OPENAL_INCLUDE);$(FREEALUT_INCLUDE);$(LIBOGG_INCLUDE);$(EAX_INCLUDE);$(IncludePath)</IncludePath>
-    <LibraryPath>$(OPENAL_SDK32);$(FREEALUT_SDK);$(LIBOGG_SDK);$(EAX_SDK);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OPENAL_INCLUDE);$(FREEALUT_INCLUDE);$(LIBOGG_INCLUDE);$(EAX_INCLUDE);$(LIBVORBIS_INCLUDE);$(ALUT_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_ROOT)\stage\lib;$(OPENAL_SDK32);$(FREEALUT_SDK);$(LIBOGG_SDK);$(EAX_SDK);$(LIBVORBIS_SDK);$(ALUT_SDK);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -47,7 +47,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenAL32.lib;alut.lib;libogg_static.lib;eax.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenAL32.lib;alut.lib;libogg_static.lib;eax.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,12 +64,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AudioObject.h" />
-    <ClInclude Include="AudioObjectsPool.h" />
     <ClInclude Include="GameAudioWrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioObjectsPool.cpp" />
     <ClCompile Include="GameAudioWrapper.cpp" />
     <ClCompile Include="MainTest.cpp" />
   </ItemGroup>
