@@ -322,12 +322,12 @@ bool GameAudioWrapper::Play(int iSoundId, bool iForceRestart )const
 			return false; 
 	}
 	alSourcePlay(mAudioSources[iSoundId]);
-	//// This is a busy wait loop but should be good enough for example purpose
-	do {
-		// Query the state of the souce
-		alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
-	} while (state != AL_STOPPED);
-	//
+	////// This is a busy wait loop but should be good enough for example purpose
+	//do {
+	//	// Query the state of the souce
+	//	alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
+	//} while (state != AL_STOPPED);
+	////
 	if ( CheckErrors( "GameAudioWrapper::Play ") )
 		return false;
  

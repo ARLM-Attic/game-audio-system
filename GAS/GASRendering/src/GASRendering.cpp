@@ -52,10 +52,17 @@ void GASRendering::createScene(void)
     Ogre::Light* l = mSceneMgr->createLight("MainLight");
     l->setPosition(20,80,50);
 
-	unsigned int id = mAudioWrapper.CreateSource(std::string("Media/sounds/Bomb"), std::string("ogg"));
+	Ogre::SceneNode* speaker1Node = mSceneMgr->createSceneNode("Speaker1");
+	mSceneMgr->getRootSceneNode()->addChild(speaker1Node);
+	Ogre::Entity* model = mSceneMgr->createEntity("Speaker1_ent","cube.mesh");
+	speaker1Node->attachObject(model);
+
+
+		unsigned int id = mAudioWrapper.CreateSource(std::string("Media/sounds/Bomb"), std::string("ogg"));
 	mAudioWrapper.Play(id);
 	unsigned int id2 = mAudioWrapper.CreateSource(std::string("Media/sounds/provay"), std::string("ogg"));
 	mAudioWrapper.Play(id2);
+
 }
 
 

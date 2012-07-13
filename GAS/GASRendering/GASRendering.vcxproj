@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{42555AFD-0B5A-4515-85AE-163EA1AEA87D}</ProjectGuid>
     <RootNamespace>GASRendering</RootNamespace>
+    <ProjectName>GASOgre</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,8 +41,8 @@
     <IntDir>obj\$(Configuration)\</IntDir>
     <OutDir>bin\$(Configuration)\</OutDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(LIBVORBIS_INCLUDE);$(ALUT_INCLUDE);$(OPENAL_INCLUDE);$(FREEALUT_INCLUDE);$(LIBOGG_INCLUDE);$(EAX_INCLUDE);$(SolutionDir)\GAS;$(BOOST_ROOT);$(OIS_HOME)includes;$(OGRE_SRC)Samples\Common\include;$(OGRE_SRC)OgreMain\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OPENAL_SDK32);$(FREEALUT_SDK);$(LIBOGG_SDK);$(EAX_SDK);$(LIBVORBIS_SDK);$(ALUT_SDK);$(SolutionDir)\$(Configuration);$(BOOST_ROOT)\stage\lib;$(OGRE_SRC)Dependencies\lib\$(Configuration);C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIBVORBIS_INCLUDE);$(ALUT_INCLUDE);$(OPENAL_INCLUDE);$(FREEALUT_INCLUDE);$(LIBOGG_INCLUDE);$(EAX_INCLUDE);$(BOOST_ROOT);$(OIS_HOME)includes;$(OGRE_SRC)Samples\Common\include;$(OGRE_SRC)OgreMain\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENAL_SDK32);$(FREEALUT_SDK);$(LIBOGG_SDK);$(EAX_SDK);$(LIBVORBIS_SDK);$(ALUT_SDK);$(BOOST_ROOT)\stage\lib;$(OGRE_SRC)Dependencies\lib\$(Configuration);C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>obj\$(Configuration)\</IntDir>
@@ -72,7 +73,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost_1_44\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenAL32.lib;alut.lib;libogg_static.lib;eax.lib;libvorbis_static.lib;libvorbisfile_static.lib;GAS.lib;OgreMain_d.lib;OIS_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenAL32.lib;alut.lib;libogg_static.lib;eax.lib;libvorbis_static.lib;libvorbisfile_static.lib;OgreMain_d.lib;OIS_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
@@ -117,11 +118,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h" />
+    <ClInclude Include="include\GameAudioObject.h" />
+    <ClInclude Include="include\GameAudioWrapper.h" />
     <ClInclude Include="include\GASRendering.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseApplication.cpp" />
+    <ClCompile Include="src\GameAudioObject.cpp" />
+    <ClCompile Include="src\GameAudioWrapper.cpp" />
     <ClCompile Include="src\GASRendering.cpp" />
   </ItemGroup>
   <ItemGroup>

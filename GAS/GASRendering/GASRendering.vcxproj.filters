@@ -13,24 +13,48 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="File di intestazione\GAS">
+      <UniqueIdentifier>{dcca2c47-6316-4815-a8e5-1b6f96f4fc80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\Ogre">
+      <UniqueIdentifier>{47c2c45f-10e7-4f05-8bf1-e1992529b53d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Ogre">
+      <UniqueIdentifier>{85fc77c9-286e-409a-972c-f4cdfbb7a405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\GAS">
+      <UniqueIdentifier>{e407cb12-b4ed-431b-88e9-f060f01d0e6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GameAudioObject.h">
+      <Filter>File di intestazione\GAS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameAudioWrapper.h">
+      <Filter>File di intestazione\GAS</Filter>
+    </ClInclude>
     <ClInclude Include="include\GASRendering.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\Ogre</Filter>
     </ClInclude>
     <ClInclude Include="include\BaseApplication.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\Ogre</Filter>
     </ClInclude>
     <ClInclude Include="res\Resource.h">
-      <Filter>File di intestazione</Filter>
+      <Filter>File di intestazione\Ogre</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GASRendering.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseApplication.cpp">
-      <Filter>File di origine</Filter>
+      <Filter>File di origine\Ogre</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GASRendering.cpp">
+      <Filter>File di origine\Ogre</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameAudioObject.cpp">
+      <Filter>File di origine\GAS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameAudioWrapper.cpp">
+      <Filter>File di origine\GAS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

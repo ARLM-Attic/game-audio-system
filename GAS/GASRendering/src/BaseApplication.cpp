@@ -257,7 +257,6 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(mShutDown)
         return false;
-
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
