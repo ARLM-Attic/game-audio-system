@@ -7,6 +7,7 @@
 #include <AL\alut.h>
 
 using namespace GAS;
+template<> GameAudioWrapper* Ogre::Singleton<GameAudioWrapper>::msSingleton = 0;
 
 const ALfloat GameAudioWrapper::DEFAULT_LISTENER_POS[3] = {0.0f,0.0f,0.0f};
 const ALfloat GameAudioWrapper::DEFAULT_LISTENER_VEL[3] = {0.0f,0.0f,0.0f};
@@ -23,6 +24,18 @@ GameAudioWrapper::GameAudioWrapper(void)
 
 GameAudioWrapper::~GameAudioWrapper(void)
 {
+	// Delete the sources and buffers
+	alDeleteSources( MAX_AUDIO_SOURCES, mAudioSources );
+	alDeleteBuffers( MAX_AUDIO_BUFFERS, mAudioBuffers );
+ 
+    // Destroy the sound context and device
+    mSoundContext = alcGetCurrentContext();
+    mSoundDevice = alcGetContextsDevice( mSoundContext );
+    alcMakeContextCurrent( NULL );
+    alcDestroyContext( mSoundContext );
+    if ( mSoundDevice)
+        alcCloseDevice( mSoundDevice );
+ 
 }
 
 bool GameAudioWrapper::Init()
@@ -300,7 +313,7 @@ int GameAudioWrapper::GetFreeSource()const
 	return -1;
 }
 
-bool GameAudioWrapper::Play(int iSoundId, bool iForceRestart )const
+bool GameAudioWrapper::Play(int iSoundId,bool iLoop, bool iForceRestart )const
 {
 	int sourceAudioState = 0;
  
@@ -321,6 +334,10 @@ bool GameAudioWrapper::Play(int iSoundId, bool iForceRestart )const
 		else
 			return false; 
 	}
+	if (iLoop)
+		alSourcei( mAudioSources[iSoundId], AL_LOOPING, true );
+	
+	alSourcei( mAudioSources[iSoundId], AL_REFERENCE_DISTANCE, 100 );
 	alSourcePlay(mAudioSources[iSoundId]);
 	////// This is a busy wait loop but should be good enough for example purpose
 	//do {
@@ -412,4 +429,14 @@ bool GameAudioWrapper::ResumeAll()const
 		}
 	}
 	return ret;
+}
+
+void GameAudioWrapper::SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ)
+{
+	alSource3f(mAudioSources[iSourceId], AL_POSITION, iX,iY,iZ);
+}
+
+void GameAudioWrapper::SetListenerPosition(const ALfloat iX,const ALfloat iY,const ALfloat iZ)
+{
+	alListener3f( AL_POSITION,  iX,iY,iZ );
 }

@@ -7,7 +7,7 @@ namespace GAS
 class GameAudioObject: public Ogre::SceneNode::Listener
 {
 public:
-	GameAudioObject(Ogre::SceneNode *iSceneNode);
+	GameAudioObject(Ogre::SceneNode *iSceneNode,int iSoundId);
 	~GameAudioObject(void);
 	virtual void nodeUpdated (const Ogre::Node * iNode);
 	virtual void nodeDestroyed (const Ogre::Node *iNode);

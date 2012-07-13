@@ -42,6 +42,9 @@
     <ClInclude Include="res\Resource.h">
       <Filter>File di intestazione\Ogre</Filter>
     </ClInclude>
+    <ClInclude Include="SoundSourceDescriptor.h">
+      <Filter>File di intestazione\GAS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseApplication.cpp">

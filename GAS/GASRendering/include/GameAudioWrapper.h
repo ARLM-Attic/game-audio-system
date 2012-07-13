@@ -10,13 +10,14 @@
 #include <string>
 #include <bitset>
 #include <unordered_map>
+#include <Ogre.h>
 
-
+#include "SoundSourceDescriptor.h"
 
 namespace GAS
 {
 
-class GameAudioWrapper
+class GameAudioWrapper : public Ogre::Singleton<GameAudioWrapper>
 {
 public:
 	GameAudioWrapper(void);
@@ -26,7 +27,9 @@ public:
 	int CreateSource(std::string& iFileName, std::string& iFormat);
 	bool IsFormatSupported(std::string& iFormat) const;
 	bool IsLoadedSound(std::string& iSoundName)const;
-	bool Play(int iSoundId, bool iForceRestart = true)const;
+
+	//--------------------------------------------------
+	bool Play(int iSoundId,bool iLoop = false, bool iForceRestart = true)const;
 	bool Stop(int iSoundId)const;
 	bool Pause(int iSoundId)const;
 	bool Resume(int iSoundId)const;
@@ -34,6 +37,10 @@ public:
 	bool PauseAll()const;
 	bool StopAll()const;
 	bool ResumeAll()const;
+
+	//--------------------------------------------------
+	void SetListenerPosition(const ALfloat iX,const ALfloat iY,const ALfloat iZ);
+	void SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ);
 	
 private:
 	bool Init();
