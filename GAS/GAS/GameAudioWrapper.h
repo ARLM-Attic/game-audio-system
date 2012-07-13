@@ -2,6 +2,7 @@
 
 
 #include <eaxac3.h>
+//#include <eaxac3.h>
 #include <eax.h>
 #include <al.h>
 #include <alc.h>
@@ -25,7 +26,15 @@ public:
 	int CreateSource(std::string& iFileName, std::string& iFormat);
 	bool IsFormatSupported(std::string& iFormat) const;
 	bool IsLoadedSound(std::string& iSoundName)const;
-	bool Play(unsigned int iSoundId)const;
+	bool Play(int iSoundId, bool iForceRestart = true)const;
+	bool Stop(int iSoundId)const;
+	bool Pause(int iSoundId)const;
+	bool Resume(int iSoundId)const;
+
+	bool PauseAll()const;
+	bool StopAll()const;
+	bool ResumeAll()const;
+	
 private:
 	bool Init();
 	bool InitEAX();
@@ -60,8 +69,8 @@ private:
 	BufferNameMap mBufferNames;
 
 	//------ EAX extensions --------------
-	bool mActiveEAX;
-	bool mActiveEAX_AC3;
+	ALboolean mActiveEAX;
+	ALboolean mActiveEAX_AC3;
 
 	LPEAXAC3FNTABLE mEaxFunctionTable;
 //	EAXSet mEaxSet;

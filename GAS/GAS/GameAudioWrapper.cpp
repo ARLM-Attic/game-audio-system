@@ -300,7 +300,7 @@ int GameAudioWrapper::GetFreeSource()const
 	return -1;
 }
 
-bool GameAudioWrapper::Play(unsigned int iSoundId)const
+bool GameAudioWrapper::Play(int iSoundId, bool iForceRestart )const
 {
 	int sourceAudioState = 0;
  
@@ -308,15 +308,108 @@ bool GameAudioWrapper::Play(unsigned int iSoundId)const
  
  
 	ALint state ;
+	alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
+
+	if ( state == AL_PLAYING )
+	{
+		if ( iForceRestart )
+		{
+			bool ret = Stop( iSoundId);
+			if (!ret)
+			return false;
+		}
+		else
+			return false; 
+	}
 	alSourcePlay(mAudioSources[iSoundId]);
-	// This is a busy wait loop but should be good enough for example purpose
+	//// This is a busy wait loop but should be good enough for example purpose
 	do {
 		// Query the state of the souce
 		alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
 	} while (state != AL_STOPPED);
-	
-	if ( CheckErrors( "playAudio::alSourcePlay: ") )
+	//
+	if ( CheckErrors( "GameAudioWrapper::Play ") )
 		return false;
  
 	return true;
+}
+
+bool GameAudioWrapper::Stop(int iSoundId)const
+{
+	alGetError();
+	ALint state;
+	alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
+
+	if (state == AL_PLAYING || state == AL_PAUSED){
+		alSourceStop( mAudioSources[iSoundId] );
+
+		if (!CheckErrors("GameAudioWrapper::Stop"))
+			return true;
+	}
+	return false;
+}
+bool GameAudioWrapper::Pause(int iSoundId)const
+{
+	alGetError();
+	ALint state;
+	alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
+
+	if (state == AL_PLAYING){
+		alSourcePause( mAudioSources[iSoundId] );
+
+		if (!CheckErrors("GameAudioWrapper::Pause"))
+			return true;
+	}
+	return false;
+}
+bool GameAudioWrapper::PauseAll()const
+{
+	alGetError();
+ 
+	alSourcePausev(  MAX_AUDIO_SOURCES, mAudioSources );
+ 
+	if ( CheckErrors( "GameAudioWrapper::PauseAll") )
+		return false;
+ 
+	return true;
+}
+bool GameAudioWrapper::StopAll()const
+{
+	alGetError();
+ 
+	alSourceStopv(  MAX_AUDIO_SOURCES, mAudioSources );
+ 
+	if ( CheckErrors( "GameAudioWrapper::StopAll") )
+		return false;
+ 
+	return true;
+}
+
+bool GameAudioWrapper::Resume(int iSoundId)const
+{
+	alGetError();
+
+	ALint state;
+	alGetSourcei(mAudioSources[iSoundId], AL_SOURCE_STATE, &state);
+
+	if (state == AL_PAUSED)
+	{
+		return Play(iSoundId,false);
+	}
+	return false;
+}
+
+bool GameAudioWrapper::ResumeAll()const
+{
+	ALint state;
+	bool ret = true;
+	for (int i = 0 ; i < MAX_AUDIO_SOURCES;++i)
+	{
+		alGetSourcei(mAudioSources[i], AL_SOURCE_STATE, &state);
+		if (state == AL_PAUSED)
+		{
+			ret = ret &&  Resume(mAudioSources[i]);
+		}
+	}
+	return ret;
 }

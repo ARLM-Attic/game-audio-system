@@ -16,18 +16,30 @@
     <Filter Include="Test">
       <UniqueIdentifier>{2b62dae2-1187-4ca5-b955-040f3106543a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File di intestazione\Core">
+      <UniqueIdentifier>{bc0f7795-7992-4f59-8675-527e0cf645f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Core">
+      <UniqueIdentifier>{cb534919-f820-498d-9dee-8c3421511272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\Test">
+      <UniqueIdentifier>{4a1069d8-f825-4c25-afd2-3d7a43918516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Test">
+      <UniqueIdentifier>{58a6edd9-5266-4b0c-86bd-e5232fd714b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameAudioWrapper.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="GameAudioWrapper.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="MainTest.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="GameAudioWrapper.cpp">
+      <Filter>File di origine\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameAudioWrapper.h">
+      <Filter>File di intestazione\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
