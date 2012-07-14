@@ -121,8 +121,8 @@
     <ClInclude Include="include\GameAudioObject.h" />
     <ClInclude Include="include\GameAudioWrapper.h" />
     <ClInclude Include="include\GASRendering.h" />
+    <ClInclude Include="include\SoundSourceDescriptor.h" />
     <ClInclude Include="res\Resource.h" />
-    <ClInclude Include="SoundSourceDescriptor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseApplication.cpp" />

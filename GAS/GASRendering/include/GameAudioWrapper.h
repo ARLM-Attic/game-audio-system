@@ -23,10 +23,10 @@ public:
 	GameAudioWrapper(void);
 	~GameAudioWrapper(void);
 
-	void LoadSound(std::string& iFileName, std::string& iFormat);
-	int CreateSource(std::string& iFileName, std::string& iFormat);
-	bool IsFormatSupported(std::string& iFormat) const;
-	bool IsLoadedSound(std::string& iSoundName)const;
+	void LoadSound(const std::string& iFileName, const std::string& iFormat);
+	int CreateSource(const std::string& iFileName,const  std::string& iFormat,const SoundSourceDescriptor& iDesc);
+	bool IsFormatSupported(const std::string& iFormat) const;
+	bool IsLoadedSound(const std::string& iSoundName)const;
 
 	//--------------------------------------------------
 	bool Play(int iSoundId,bool iLoop = false, bool iForceRestart = true)const;

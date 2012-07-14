@@ -141,14 +141,14 @@ bool GameAudioWrapper::CheckErrors(const std::string& iSource) const
  
    return true;
  }
-bool GameAudioWrapper::IsLoadedSound(std::string& iSoundName)const
+bool GameAudioWrapper::IsLoadedSound(const std::string& iSoundName)const
 {
 	BufferNameMap::const_iterator it = mBufferNames.find(iSoundName);
 	if (it != mBufferNames.end())
 		return true;
 	return false;
 }
-int GameAudioWrapper::CreateSource(std::string& iFileName, std::string& iFormat)
+int GameAudioWrapper::CreateSource(const std::string& iFileName, const std::string& iFormat,const SoundSourceDescriptor& iDesc)
 {
 	
 	
@@ -166,14 +166,16 @@ int GameAudioWrapper::CreateSource(std::string& iFileName, std::string& iFormat)
 		throw;
 
 	alSourcei( mAudioSources[sourceId], AL_BUFFER, mAudioBuffers[bufferId] );
-
+	alSourcef( mAudioSources[sourceId], AL_GAIN, iDesc.gain );
+	alSourcef( mAudioSources[sourceId], AL_PITCH, iDesc.pitch );
+	alSourcef( mAudioSources[sourceId], AL_REFERENCE_DISTANCE, iDesc.reference_distance );
 	mUsedSources.set(sourceId);
 
 	if (CheckErrors("GameAudioWrapper::CreateSource"))
 		throw;
 	return  sourceId;
 }
-void GameAudioWrapper::LoadSound(std::string& iFileName, std::string& iFormat)
+void GameAudioWrapper::LoadSound(const std::string& iFileName, const std::string& iFormat)
 {
 	if (!IsFormatSupported(iFormat))
 	{
@@ -197,7 +199,7 @@ void GameAudioWrapper::LoadSound(std::string& iFileName, std::string& iFormat)
 	mBufferNames[iFileName + "." + iFormat] = bufferIndex;
 }
 
-bool GameAudioWrapper::IsFormatSupported(std::string& iFormat)const
+bool GameAudioWrapper::IsFormatSupported(const std::string& iFormat)const
 {
 	if (iFormat == "ogg" || iFormat == "wav")
 		return true;
@@ -337,7 +339,7 @@ bool GameAudioWrapper::Play(int iSoundId,bool iLoop, bool iForceRestart )const
 	if (iLoop)
 		alSourcei( mAudioSources[iSoundId], AL_LOOPING, true );
 	
-	alSourcei( mAudioSources[iSoundId], AL_REFERENCE_DISTANCE, 100 );
+	
 	alSourcePlay(mAudioSources[iSoundId]);
 	////// This is a busy wait loop but should be good enough for example purpose
 	//do {

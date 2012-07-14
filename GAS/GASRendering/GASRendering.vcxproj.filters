@@ -42,7 +42,7 @@
     <ClInclude Include="res\Resource.h">
       <Filter>File di intestazione\Ogre</Filter>
     </ClInclude>
-    <ClInclude Include="SoundSourceDescriptor.h">
+    <ClInclude Include="include\SoundSourceDescriptor.h">
       <Filter>File di intestazione\GAS</Filter>
     </ClInclude>
   </ItemGroup>
