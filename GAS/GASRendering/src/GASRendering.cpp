@@ -32,10 +32,36 @@ GASRendering::~GASRendering(void)
 {
 }
 
+void GASRendering::CreateGui()
+{
+	mSpeaker1Label = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Speaker1Label", "Speaker 1", 160.0f);
+	mSpeaker1PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Play", "Play", 160.0f);
+	mSpeaker1PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Pause", "Pause", 160.0f);
+	mSpeaker1StopButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Stop", "Stop", 160.0f);
+	mSpeaker1PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Pitch", "Pitch", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	mSpeaker1PitchSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetPitch(mSpeaker1->GetSoundId()));
+	mSpeaker1GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Gain", "Gain", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	mSpeaker1GainSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetGain(mSpeaker1->GetSoundId()));
+	mSpeaker1LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPLEFT,"Speaker1Loop","Loop");
+	
+	//workaround for empty tray bug..to be removed at first update
+	mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Empty", "WorkAround", 160.0f);
+	
+	mSpeaker2Label = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "Speaker2Label", "Speaker 2", 160.0f);
+	mSpeaker2PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Play", "Play", 160.0f);
+	mSpeaker2PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Pause", "Pause", 160.0f);
+	mSpeaker2StopButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Stop", "Stop", 160.0f);
+	mSpeaker2PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Pitch", "Pitch", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	mSpeaker2PitchSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetPitch(mSpeaker2->GetSoundId()));
+	mSpeaker2GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Gain", "Gain", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	mSpeaker2GainSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetGain(mSpeaker2->GetSoundId()));
+	mSpeaker2LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPRIGHT,"Speaker2Loop","Loop");
+}
 //-------------------------------------------------------------------------------------
 void GASRendering::createScene(void)
 {
    
+	
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 	Ogre::MeshManager::getSingleton().createPlane("Floor", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 		plane, 1000, 1000, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
@@ -53,11 +79,21 @@ void GASRendering::createScene(void)
     Ogre::Light* l = mSceneMgr->createLight("MainLight");
     l->setPosition(20,80,50);
 
+	//SPEAKER1 MODEL
 	mSpeaker1Node = mSceneMgr->createSceneNode("Speaker1");
 	mSceneMgr->getRootSceneNode()->addChild(mSpeaker1Node);
 	Ogre::Entity* model = mSceneMgr->createEntity("Speaker1_ent","cube.mesh");
 	mSpeaker1Node->attachObject(model);
-
+	mSpeaker1Node->setPosition(Ogre::Vector3(-20.0f, 0.0f, 0.0f));
+	mSpeaker1Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2);
+	//SPEAKER2 MODEL
+	mSpeaker2Node = mSceneMgr->createSceneNode("Speaker2");
+	mSceneMgr->getRootSceneNode()->addChild(mSpeaker2Node);
+	Ogre::Entity* model2 = mSceneMgr->createEntity("Speaker2_ent","cube.mesh");
+	mSpeaker2Node->attachObject(model2);
+	mSpeaker2Node->setPosition(Ogre::Vector3(20.0f, 0.0f, 0.0f));
+	mSpeaker2Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2);
+	//LISTENER
 	Ogre::SceneNode* n = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::Entity* ent = mSceneMgr->createEntity("Sinbad", "Sinbad.mesh");
 	n->scale(Ogre::Vector3::UNIT_SCALE * 5);
@@ -67,12 +103,16 @@ void GASRendering::createScene(void)
 
 	GAS::DefualtSoundSourceDescriptor desc;
 	unsigned int id = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/Bomb"), std::string("ogg"),desc);
-//	GAS::GameAudioWrapper::getSingleton().Play(id);
 	unsigned int id2 = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/provay"), std::string("ogg"),desc);
-	GAS::GameAudioWrapper::getSingleton().Play(id,true);
 
 	mSpeaker1 = new GAS::GameAudioObject(mSpeaker1Node, id);
+	mSpeaker2 = new GAS::GameAudioObject(mSpeaker2Node, id2);
 
+	//mRoot->renderOneFrame();
+	CreateGui();
+	
+    
+	
 }
 
 // OIS::KeyListener
@@ -124,9 +164,15 @@ bool GASRendering::keyReleased( const OIS::KeyEvent &arg )
 	return true;
 }
 
+static bool guiCreated = false;
 //-------------------------------------------------------------------------------------
 bool GASRendering::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+	if (!guiCreated)
+	{
+		mTrayMgr->destroyWidget("Empty");
+		guiCreated = true;
+	}
     if(mWindow->isClosed())
         return false;
 
@@ -169,20 +215,77 @@ bool GASRendering::frameRenderingQueued(const Ogre::FrameEvent& evt)
     if (!mTrayMgr->isDialogVisible())
     {
         mCameraMan->frameRenderingQueued(evt);   // if dialog isn't up, then update the camera
-        if (mDetailsPanel->isVisible())   // if details panel is visible, then update its contents
-        {
-            mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(mCamera->getDerivedPosition().x));
-            mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(mCamera->getDerivedPosition().y));
-            mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(mCamera->getDerivedPosition().z));
-            mDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().w));
-            mDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().x));
-            mDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().y));
-            mDetailsPanel->setParamValue(7, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().z));
-        }
+	//	mTrayMgr->showAll();
+        //if (mDetailsPanel->isVisible())   // if details panel is visible, then update its contents
+        //{
+        //    mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(mCamera->getDerivedPosition().x));
+        //    mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(mCamera->getDerivedPosition().y));
+        //    mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(mCamera->getDerivedPosition().z));
+        //    mDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().w));
+        //    mDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().x));
+        //    mDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().y));
+        //    mDetailsPanel->setParamValue(7, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().z));
+        //}
     }
 
     return true;
 }
+
+
+
+
+void GASRendering::buttonHit(OgreBites::Button* button)
+{
+	if (button->getName() == "Speaker1Play")
+	{		
+		
+		GAS::GameAudioWrapper::getSingleton().Play(mSpeaker1->GetSoundId(),mSpeaker1LoopCheckbox->isChecked());
+	}else if(button->getName() == "Speaker2Play")
+	{
+		GAS::GameAudioWrapper::getSingleton().Play(mSpeaker2->GetSoundId(),mSpeaker2LoopCheckbox->isChecked());
+	}else if(button->getName() == "Speaker1Stop")
+	{
+		GAS::GameAudioWrapper::getSingleton().Stop(mSpeaker1->GetSoundId());
+	}else if(button->getName() == "Speaker2Stop")
+	{
+		GAS::GameAudioWrapper::getSingleton().Stop(mSpeaker2->GetSoundId());
+	}else if(button->getName() == "Speaker1Pause")
+	{
+		GAS::GameAudioWrapper::getSingleton().Pause(mSpeaker1->GetSoundId());
+	}else if(button->getName() == "Speaker2Pause")
+	{
+		GAS::GameAudioWrapper::getSingleton().Pause(mSpeaker2->GetSoundId());
+	}
+}
+void GASRendering::sliderMoved(OgreBites::Slider* slider)
+{
+	if (slider->getName() == "Speaker1Pitch")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetPitch(mSpeaker1->GetSoundId(), slider->getValue());
+	}else if (slider->getName() == "Speaker2Pitch")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetPitch(mSpeaker2->GetSoundId(), slider->getValue());
+	}else if (slider->getName() == "Speaker1Gain")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetGain(mSpeaker1->GetSoundId(), slider->getValue());
+	}else if (slider->getName() == "Speaker2Gain")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetGain(mSpeaker2->GetSoundId(), slider->getValue());
+	} 
+	
+}
+void GASRendering::checkBoxToggled(OgreBites::CheckBox* box)
+{
+
+}
+
+
+
+
+
+
+//---------------------------------- MAIN ------------------------------------------
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

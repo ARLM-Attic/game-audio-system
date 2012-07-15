@@ -38,6 +38,10 @@ public:
 	bool StopAll()const;
 	bool ResumeAll()const;
 
+	void SetPitch(int iSourceId, ALfloat iVal);
+	void SetGain(int iSourceId, ALfloat iVal);
+	ALfloat GetPitch(int iSourceId);
+	ALfloat GetGain(int iSourceId);
 	//--------------------------------------------------
 	void SetListenerPosition(const ALfloat iX,const ALfloat iY,const ALfloat iZ);
 	void SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ);

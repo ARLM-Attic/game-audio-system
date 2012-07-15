@@ -15,7 +15,10 @@ GameAudioObject::GameAudioObject(Ogre::SceneNode *iSceneNode,int iSoundId)
 GameAudioObject::~GameAudioObject(void)
 {
 }
-
+int GameAudioObject::GetSoundId()const
+{
+	return mSoundId;
+}
 void GameAudioObject::nodeUpdated (const Ogre::Node * iNode)
 {
 	int x = 5;

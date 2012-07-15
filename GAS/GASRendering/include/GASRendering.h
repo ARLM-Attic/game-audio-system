@@ -33,6 +33,7 @@ public:
 
 protected:
     virtual void createScene(void);
+	void CreateGui();
 	// OIS::KeyListener
     virtual bool keyPressed( const OIS::KeyEvent &arg );
     virtual bool keyReleased( const OIS::KeyEvent &arg );
@@ -40,9 +41,14 @@ protected:
 	 // Ogre::FrameListener
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
+
+	virtual void buttonHit(OgreBites::Button* button);
+	virtual void sliderMoved(OgreBites::Slider* slider);
+	virtual void checkBoxToggled(OgreBites::CheckBox* box);
 	//------------SOUND
 //	GAS::GameAudioWrapper mAudioWrapper;
 	Ogre::SceneNode* mSpeaker1Node;
+	Ogre::SceneNode* mSpeaker2Node;
 	GAS::GameAudioObject *mSpeaker1;
 	GAS::GameAudioObject *mSpeaker2;
 
@@ -50,6 +56,22 @@ protected:
 	bool mSpeak1MovingRight;
 	bool mSpeak1MovingFwd;
 	bool mSpeak1MovingBack;
+
+	OgreBites::Label* mSpeaker1Label;	
+	OgreBites::Button*		mSpeaker1PlayButton;
+	OgreBites::Button*		mSpeaker1PauseButton;
+	OgreBites::Button*		mSpeaker1StopButton;
+	OgreBites::Slider* mSpeaker1PitchSlider;
+	OgreBites::Slider* mSpeaker1GainSlider;
+	OgreBites::CheckBox *mSpeaker1LoopCheckbox;
+
+	OgreBites::Label* mSpeaker2Label;	
+	OgreBites::Button*		mSpeaker2PlayButton;
+	OgreBites::Button*		mSpeaker2PauseButton;
+	OgreBites::Button*		mSpeaker2StopButton;
+	OgreBites::Slider* mSpeaker2PitchSlider;
+	OgreBites::Slider* mSpeaker2GainSlider;
+	OgreBites::CheckBox *mSpeaker2LoopCheckbox;
 };
 
 #endif // #ifndef __GASRendering_h_

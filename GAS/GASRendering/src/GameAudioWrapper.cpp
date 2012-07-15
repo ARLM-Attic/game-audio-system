@@ -336,9 +336,8 @@ bool GameAudioWrapper::Play(int iSoundId,bool iLoop, bool iForceRestart )const
 		else
 			return false; 
 	}
-	if (iLoop)
-		alSourcei( mAudioSources[iSoundId], AL_LOOPING, true );
 	
+	alSourcei( mAudioSources[iSoundId], AL_LOOPING, iLoop );
 	
 	alSourcePlay(mAudioSources[iSoundId]);
 	////// This is a busy wait loop but should be good enough for example purpose
@@ -432,7 +431,31 @@ bool GameAudioWrapper::ResumeAll()const
 	}
 	return ret;
 }
+void GameAudioWrapper::SetPitch(int iSourceId, ALfloat iVal)
+{
+	alSourcef( mAudioSources[iSourceId], AL_PITCH, iVal );
+	
+}
+void GameAudioWrapper::SetGain(int iSourceId, ALfloat iVal)
+{
+	alSourcef( mAudioSources[iSourceId], AL_GAIN, iVal );
+	
+}
+ALfloat GameAudioWrapper::GetPitch(int iSourceId)
+{
+	ALfloat pitch = 0.0f;
+	alGetSourcef(mAudioSources[iSourceId], AL_PITCH, &pitch);
 
+	return pitch;
+}
+ALfloat GameAudioWrapper::GetGain(int iSourceId)
+{
+	ALfloat gain = 0.0f;
+	alGetSourcef(mAudioSources[iSourceId], AL_GAIN, &gain);
+
+	return gain;
+}
+	
 void GameAudioWrapper::SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ)
 {
 	alSource3f(mAudioSources[iSourceId], AL_POSITION, iX,iY,iZ);
