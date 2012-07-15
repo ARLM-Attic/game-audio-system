@@ -45,6 +45,9 @@
     <ClInclude Include="include\SoundSourceDescriptor.h">
       <Filter>File di intestazione\GAS</Filter>
     </ClInclude>
+    <ClInclude Include="include\GameAudioListener.h">
+      <Filter>File di intestazione\GAS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseApplication.cpp">
@@ -57,6 +60,9 @@
       <Filter>File di origine\GAS</Filter>
     </ClCompile>
     <ClCompile Include="src\GameAudioWrapper.cpp">
+      <Filter>File di origine\GAS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameAudioListener.cpp">
       <Filter>File di origine\GAS</Filter>
     </ClCompile>
   </ItemGroup>

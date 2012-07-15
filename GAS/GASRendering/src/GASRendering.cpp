@@ -25,6 +25,14 @@ GASRendering::GASRendering(void)
 	,mSpeak1MovingFwd(false)
 	,mSpeak1MovingRight(false)
 	,mSpeak1MovingBack(false)
+	,mSpeak2MovingLeft(false)
+	,mSpeak2MovingFwd(false)
+	,mSpeak2MovingRight(false)
+	,mSpeak2MovingBack(false)
+	,mListenerMovingLeft(false)
+	,mListenerMovingFwd(false)
+	,mListenerMovingRight(false)
+	,mListenerMovingBack(false)
 {
 }
 //-------------------------------------------------------------------------------------
@@ -80,6 +88,11 @@ void GASRendering::CreateGui()
 	mSpeaker2ReferenceDistanceSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2ReferenceDistance", "Reference Distance", widgetW, boxW, 0.0f, 600.0f ,50);
 	mSpeaker2ReferenceDistanceSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetFloatProperty(mSpeaker2->GetSoundId(),AL_REFERENCE_DISTANCE));
 	
+	mSelectObjectLayer = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "ObjectSelectionLabel", "Select Object", widgetW);
+	mSelectSpeakear1Checkbox = mTrayMgr->createCheckBox(OgreBites::TL_BOTTOMLEFT,"SelectSpeaker1","Speaker1",widgetW);
+	mSelectSpeakear2Checkbox = mTrayMgr->createCheckBox(OgreBites::TL_BOTTOMLEFT,"SelectSpeaker2","Speaker2",widgetW);
+	mSelectListenerCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_BOTTOMLEFT,"SelectListener","Listener",widgetW);
+	
 }
 //-------------------------------------------------------------------------------------
 void GASRendering::createScene(void)
@@ -123,12 +136,12 @@ void GASRendering::createScene(void)
 
 
 	//LISTENER
-	Ogre::SceneNode* n = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	mListenerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::Entity* ent = mSceneMgr->createEntity("Sinbad", "Sinbad.mesh");
-	n->attachObject(ent);
-	n->scale(Ogre::Vector3::UNIT_SCALE * 5.0f);
+	mListenerNode->attachObject(ent);
+	mListenerNode->scale(Ogre::Vector3::UNIT_SCALE * 5.0f);
 	Ogre::Real h = Ogre::Math::Abs (ent->getBoundingBox().getMinimum().y);//.getHalfSize().y;
-	n->translate(Ogre::Vector3 (0.0f,h * 5.0f,0.0f));
+	mListenerNode->translate(Ogre::Vector3 (0.0f,h * 5.0f,0.0f));
 
 	mSinbadAnimation = ent->getAnimationState("Dance");
 	mSinbadAnimation->setEnabled(true);
@@ -136,12 +149,14 @@ void GASRendering::createScene(void)
 	new GAS::GameAudioWrapper();
 
 	GAS::DefualtSoundSourceDescriptor desc;
-	unsigned int id = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/Bomb"), std::string("ogg"),desc);
-	unsigned int id2 = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/provay"), std::string("ogg"),desc);
+	unsigned int id2 = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/beat2_mono"), std::string("ogg"),desc);
+	unsigned int id = GAS::GameAudioWrapper::getSingleton().CreateSource(std::string("Media/sounds/beat_mono"), std::string("ogg"),desc);
 
 	mSpeaker1 = new GAS::GameAudioObject(mSpeaker1Node, id);
 	mSpeaker2 = new GAS::GameAudioObject(mSpeaker2Node, id2);
+	mListener = new GAS::GameAudioListener(mListenerNode);
 
+	
 	//mRoot->renderOneFrame();
 	CreateGui();
 	
@@ -153,23 +168,60 @@ void GASRendering::createScene(void)
 bool GASRendering::keyPressed( const OIS::KeyEvent &arg )
 {
 	BaseApplication::keyPressed(arg);
-
-	if (arg.key == OIS::KC_J)
-    {
-		mSpeak1MovingLeft = true;
+	if (mSelectSpeakear1Checkbox->isChecked())
+	{
+		if (arg.key == OIS::KC_J)
+		{
+			mSpeak1MovingLeft = true;
 		
-    }else if (arg.key == OIS::KC_L)
-    {
-		mSpeak1MovingRight = true;
+		}else if (arg.key == OIS::KC_L)
+		{
+			mSpeak1MovingRight = true;
 		
-    }else if (arg.key == OIS::KC_I)   
-    {
-		mSpeak1MovingFwd = true;
-	}else if (arg.key == OIS::KC_K)   
-    {
-		mSpeak1MovingBack = true;
-    }
-
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mSpeak1MovingFwd = true;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mSpeak1MovingBack = true;
+		}
+	}else if (mSelectSpeakear2Checkbox->isChecked())
+	{
+	
+		if (arg.key == OIS::KC_J)
+		{
+			mSpeak2MovingLeft = true;
+		
+		}else if (arg.key == OIS::KC_L)
+		{
+			mSpeak2MovingRight = true;
+		
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mSpeak2MovingFwd = true;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mSpeak2MovingBack = true;
+		}
+	}else if (mSelectListenerCheckbox->isChecked())
+	{
+	
+		if (arg.key == OIS::KC_J)
+		{
+			mListenerMovingLeft = true;
+		
+		}else if (arg.key == OIS::KC_L)
+		{
+			mListenerMovingRight = true;
+		
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mListenerMovingFwd = true;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mListenerMovingBack = true;
+		}
+	}
 	return true;
 }
 bool GASRendering::keyReleased( const OIS::KeyEvent &arg )
@@ -177,23 +229,61 @@ bool GASRendering::keyReleased( const OIS::KeyEvent &arg )
 	BaseApplication::keyReleased(arg);
 
 	
-
-	if (arg.key == OIS::KC_J)
-    {
-		mSpeak1MovingLeft = false;
+	if (mSelectSpeakear1Checkbox->isChecked())
+	{
+	
+		if (arg.key == OIS::KC_J)
+		{
+			mSpeak1MovingLeft = false;
 		
-    }else if (arg.key == OIS::KC_L)
-    {
-		mSpeak1MovingRight = false;
+		}else if (arg.key == OIS::KC_L)
+		{
+			mSpeak1MovingRight = false;
 		
-    }else if (arg.key == OIS::KC_I)   
-    {
-		mSpeak1MovingFwd = false;
-	}else if (arg.key == OIS::KC_K)   
-    {
-		mSpeak1MovingBack = false;
-    }
-
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mSpeak1MovingFwd = false;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mSpeak1MovingBack = false;
+		}
+	}else if (mSelectSpeakear2Checkbox->isChecked())
+	{
+	
+		if (arg.key == OIS::KC_J)
+		{
+			mSpeak2MovingLeft = false;
+		
+		}else if (arg.key == OIS::KC_L)
+		{
+			mSpeak2MovingRight = false;
+		
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mSpeak2MovingFwd = false;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mSpeak2MovingBack = false;
+		}
+	}else if (mSelectListenerCheckbox->isChecked())
+	{
+	
+		if (arg.key == OIS::KC_J)
+		{
+			mListenerMovingLeft = false;
+		
+		}else if (arg.key == OIS::KC_L)
+		{
+			mListenerMovingRight = false;
+		
+		}else if (arg.key == OIS::KC_I)   
+		{
+			mListenerMovingFwd = false;
+		}else if (arg.key == OIS::KC_K)   
+		{
+			mListenerMovingBack = false;
+		}
+	}
 	
 	return true;
 }
@@ -218,33 +308,84 @@ bool GASRendering::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	mSinbadAnimation->addTime(evt.timeSinceLastFrame);
 
-	Ogre::Vector3 traslation(0.0f,0.0f,0.0f);
+	Ogre::Vector3 traslationSpeak1(0.0f,0.0f,0.0f);
+	Ogre::Vector3 traslationSpeak2(0.0f,0.0f,0.0f);
+	Ogre::Vector3 traslationListener(0.0f,0.0f,0.0f);
+	
 	float delta = 50.0f;
-	bool modified = false;
+	bool modifiedSpeak1 = false;
+	bool modifiedSpeak2 = false;
+	bool modifiedListener = false;
 	
 	if (mSpeak1MovingBack)
 	{
-		traslation += Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
-		modified = true;
+		traslationSpeak1 += Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedSpeak1 = true;
 	}
     if (mSpeak1MovingFwd)
 	{
-		traslation += -Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
-		modified = true;
+		traslationSpeak1 += -Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedSpeak1 = true;
 	}
     if (mSpeak1MovingLeft)
 	{
-		traslation += -Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
-		modified = true;
+		traslationSpeak1 += -Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedSpeak1 = true;
 	}
     if (mSpeak1MovingRight)
 	{
-		traslation += Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
-		modified = true;
+		traslationSpeak1 += Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedSpeak1 = true;
 	}
-    
-	if (modified)
-		mSpeaker1Node->translate(traslation);
+    //-------------------
+	if (mSpeak2MovingBack)
+	{
+		traslationSpeak2 += Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedSpeak2 = true;
+	}
+    if (mSpeak2MovingFwd)
+	{
+		traslationSpeak2 += -Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedSpeak2 = true;
+	}
+    if (mSpeak2MovingLeft)
+	{
+		traslationSpeak2 += -Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedSpeak2 = true;
+	}
+    if (mSpeak2MovingRight)
+	{
+		traslationSpeak2 += Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedSpeak2 = true;
+	}
+	//-------------------------------
+	if (mListenerMovingBack)
+	{
+		traslationListener += Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedListener = true;
+	}
+    if (mListenerMovingFwd)
+	{
+		traslationListener += -Ogre::Vector3::UNIT_Z * delta * evt.timeSinceLastFrame;
+		modifiedListener = true;
+	}
+    if (mListenerMovingLeft)
+	{
+		traslationListener += -Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedListener = true;
+	}
+    if (mListenerMovingRight)
+	{
+		traslationListener += Ogre::Vector3::UNIT_X * delta * evt.timeSinceLastFrame;
+		modifiedListener = true;
+	}
+	
+	if (modifiedSpeak1)
+		mSpeaker1Node->translate(traslationSpeak1);
+	if (modifiedSpeak2)
+		mSpeaker2Node->translate(traslationSpeak2);
+	if (modifiedListener)
+		mListenerNode->translate(traslationListener);
 
 	mTrayMgr->frameRenderingQueued(evt);
 
@@ -307,12 +448,52 @@ void GASRendering::sliderMoved(OgreBites::Slider* slider)
 	}else if (slider->getName() == "Speaker2Gain")
 	{
 		GAS::GameAudioWrapper::getSingleton().SetGain(mSpeaker2->GetSoundId(), slider->getValue());
-	} 
+	}else if (slider->getName() == "Speaker1Rolloff")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetFloatProperty(mSpeaker1->GetSoundId(), AL_ROLLOFF_FACTOR,slider->getValue());
+	}else if (slider->getName() == "Speaker2Rolloff")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetFloatProperty(mSpeaker2->GetSoundId(), AL_ROLLOFF_FACTOR,slider->getValue());
+	}else if (slider->getName() == "Speaker1ReferenceDistance")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetFloatProperty(mSpeaker1->GetSoundId(), AL_REFERENCE_DISTANCE,slider->getValue());
+	}else if (slider->getName() == "Speaker2ReferenceDistance")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetFloatProperty(mSpeaker2->GetSoundId(), AL_REFERENCE_DISTANCE,slider->getValue());
+	}     
 	
 }
 void GASRendering::checkBoxToggled(OgreBites::CheckBox* box)
 {
-
+	if (box->getName() == "SelectSpeaker1")
+	{
+		if (box->isChecked())
+		{
+			mSelectSpeakear2Checkbox->setChecked(false,false);
+			mSelectListenerCheckbox->setChecked(false,false);
+		}
+	}else if (box->getName() == "SelectSpeaker2")
+	{
+		if (box->isChecked())
+		{
+			mSelectSpeakear1Checkbox->setChecked(false,false);
+			mSelectListenerCheckbox->setChecked(false,false);
+		}
+	}else if (box->getName() == "SelectListener")
+	{
+		if (box->isChecked())
+		{
+			mSelectSpeakear1Checkbox->setChecked(false,false);
+			mSelectSpeakear2Checkbox->setChecked(false,false);
+		}
+	}else if (box->getName() == "Speaker1Loop")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetLoop(mSpeaker1->GetSoundId(), box->isChecked());
+	}else if (box->getName() == "Speaker2Loop")
+	{
+		GAS::GameAudioWrapper::getSingleton().SetLoop(mSpeaker2->GetSoundId(), box->isChecked());
+	}
+	
 }
 
 

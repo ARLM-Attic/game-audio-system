@@ -34,7 +34,7 @@ struct DefualtSoundSourceDescriptor : public SoundSourceDescriptor
 		pitch = 1.0f;
 		gain = 0.8f;
 		loop = false;
-		reference_distance = 200;
+		reference_distance = 200.0f;
 		rolloff	= 0.5;
 	}
 };

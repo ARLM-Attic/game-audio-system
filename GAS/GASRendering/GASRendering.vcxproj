@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h" />
+    <ClInclude Include="include\GameAudioListener.h" />
     <ClInclude Include="include\GameAudioObject.h" />
     <ClInclude Include="include\GameAudioWrapper.h" />
     <ClInclude Include="include\GASRendering.h" />
@@ -126,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseApplication.cpp" />
+    <ClCompile Include="src\GameAudioListener.cpp" />
     <ClCompile Include="src\GameAudioObject.cpp" />
     <ClCompile Include="src\GameAudioWrapper.cpp" />
     <ClCompile Include="src\GASRendering.cpp" />

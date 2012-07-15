@@ -38,11 +38,13 @@ public:
 	bool StopAll()const;
 	bool ResumeAll()const;
 
+	void SetLoop(int iSourceId,ALboolean iLoop);
 	void SetPitch(int iSourceId, ALfloat iVal);
 	void SetGain(int iSourceId, ALfloat iVal);
 	ALfloat GetPitch(int iSourceId)const;
 	ALfloat GetGain(int iSourceId)const;
 
+	void SetFloatProperty(int iSourceId, ALenum iProp, ALfloat iVal);
 	ALfloat GetFloatProperty(int iSourceId, ALenum iProp)const;
 	//--------------------------------------------------
 	void SetListenerPosition(const ALfloat iX,const ALfloat iY,const ALfloat iZ);
