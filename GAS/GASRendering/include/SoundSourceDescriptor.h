@@ -11,11 +11,11 @@ struct SoundSourceDescriptor
 	ALfloat velocity[3];
 	ALfloat orientation[6];
 
-	float pitch;
-	float gain;
-	bool loop;
-	float reference_distance;
-
+	ALfloat pitch;
+	ALfloat gain;
+	ALboolean loop;
+	ALfloat reference_distance;
+	ALfloat rolloff;
 };
 
 struct DefualtSoundSourceDescriptor : public SoundSourceDescriptor
@@ -35,6 +35,7 @@ struct DefualtSoundSourceDescriptor : public SoundSourceDescriptor
 		gain = 0.8f;
 		loop = false;
 		reference_distance = 200;
+		rolloff	= 0.5;
 	}
 };
 }

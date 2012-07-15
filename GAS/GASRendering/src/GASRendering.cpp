@@ -34,28 +34,52 @@ GASRendering::~GASRendering(void)
 
 void GASRendering::CreateGui()
 {
-	mSpeaker1Label = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Speaker1Label", "Speaker 1", 160.0f);
-	mSpeaker1PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Play", "Play", 160.0f);
-	mSpeaker1PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Pause", "Pause", 160.0f);
-	mSpeaker1StopButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Stop", "Stop", 160.0f);
-	mSpeaker1PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Pitch", "Pitch", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	Ogre::Real widgetW = 220.0f;
+	Ogre::Real boxW = 70.0f;
+
+	//--------------------- SPEAKER 1 GUI ------------------------------
+	mSpeaker1Label = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Speaker1Label", "Speaker 1", widgetW);
+	mSpeaker1PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Play", "Play", widgetW);
+	mSpeaker1PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Pause", "Pause", widgetW);
+	mSpeaker1StopButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "Speaker1Stop", "Stop", widgetW);
+	
+	mSpeaker1PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Pitch", "Pitch", widgetW, boxW, 0.0f, 1.0f ,50);
 	mSpeaker1PitchSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetPitch(mSpeaker1->GetSoundId()));
-	mSpeaker1GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Gain", "Gain", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	
+	mSpeaker1GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Gain", "Gain", widgetW, boxW, 0.0f, 1.0f ,50);
 	mSpeaker1GainSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetGain(mSpeaker1->GetSoundId()));
-	mSpeaker1LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPLEFT,"Speaker1Loop","Loop");
+	
+	mSpeaker1LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPLEFT,"Speaker1Loop","Loop", widgetW);
+	
+	mSpeaker1RolloffSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1Rolloff", "Rolloff", widgetW, boxW, 0.0f, 1.0f ,50);
+	mSpeaker1RolloffSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetFloatProperty(mSpeaker1->GetSoundId(),AL_ROLLOFF_FACTOR));
+	
+	mSpeaker1ReferenceDistanceSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT,"Speaker1ReferenceDistance", "Reference Distance", widgetW, boxW, 0.0f, 600.0f ,50);
+	mSpeaker1ReferenceDistanceSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetFloatProperty(mSpeaker1->GetSoundId(),AL_REFERENCE_DISTANCE));
+	
 	
 	//workaround for empty tray bug..to be removed at first update
-	mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Empty", "WorkAround", 160.0f);
+	mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Empty", "WorkAround", widgetW);
 	
-	mSpeaker2Label = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "Speaker2Label", "Speaker 2", 160.0f);
-	mSpeaker2PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Play", "Play", 160.0f);
-	mSpeaker2PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Pause", "Pause", 160.0f);
-	mSpeaker2StopButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Stop", "Stop", 160.0f);
-	mSpeaker2PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Pitch", "Pitch", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	mSpeaker2Label = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "Speaker2Label", "Speaker 2", widgetW);
+	mSpeaker2PlayButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Play", "Play", widgetW);
+	mSpeaker2PauseButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Pause", "Pause", widgetW);
+	mSpeaker2StopButton = mTrayMgr->createButton(OgreBites::TL_TOPRIGHT, "Speaker2Stop", "Stop", widgetW);
+	
+	mSpeaker2PitchSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Pitch", "Pitch", widgetW, boxW, 0.0f, 1.0f ,50);
 	mSpeaker2PitchSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetPitch(mSpeaker2->GetSoundId()));
-	mSpeaker2GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Gain", "Gain", 160.0f, 90.0f, 0.0f, 1.0f ,50);
+	
+	mSpeaker2GainSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Gain", "Gain", widgetW, boxW, 0.0f, 1.0f ,50);
 	mSpeaker2GainSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetGain(mSpeaker2->GetSoundId()));
-	mSpeaker2LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPRIGHT,"Speaker2Loop","Loop");
+	
+	mSpeaker2LoopCheckbox = mTrayMgr->createCheckBox(OgreBites::TL_TOPRIGHT,"Speaker2Loop","Loop",widgetW);
+
+	mSpeaker2RolloffSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2Rolloff", "Rolloff", widgetW, boxW, 0.0f, 1.0f ,50);
+	mSpeaker2RolloffSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetFloatProperty(mSpeaker2->GetSoundId(),AL_ROLLOFF_FACTOR));
+	
+	mSpeaker2ReferenceDistanceSlider = mTrayMgr->createThickSlider(OgreBites::TL_TOPRIGHT,"Speaker2ReferenceDistance", "Reference Distance", widgetW, boxW, 0.0f, 600.0f ,50);
+	mSpeaker2ReferenceDistanceSlider->setValue (GAS::GameAudioWrapper::getSingleton().GetFloatProperty(mSpeaker2->GetSoundId(),AL_REFERENCE_DISTANCE));
+	
 }
 //-------------------------------------------------------------------------------------
 void GASRendering::createScene(void)
@@ -83,21 +107,31 @@ void GASRendering::createScene(void)
 	mSpeaker1Node = mSceneMgr->createSceneNode("Speaker1");
 	mSceneMgr->getRootSceneNode()->addChild(mSpeaker1Node);
 	Ogre::Entity* model = mSceneMgr->createEntity("Speaker1_ent","cube.mesh");
+
+	Ogre::Real delta = Ogre::Math::Abs (model->getBoundingBox().getMinimum().y);
+
 	mSpeaker1Node->attachObject(model);
-	mSpeaker1Node->setPosition(Ogre::Vector3(-20.0f, 0.0f, 0.0f));
-	mSpeaker1Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2);
+	mSpeaker1Node->setPosition(Ogre::Vector3(-20.0f, 0.2f * delta, 0.0f));
+	mSpeaker1Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2f);
 	//SPEAKER2 MODEL
 	mSpeaker2Node = mSceneMgr->createSceneNode("Speaker2");
 	mSceneMgr->getRootSceneNode()->addChild(mSpeaker2Node);
 	Ogre::Entity* model2 = mSceneMgr->createEntity("Speaker2_ent","cube.mesh");
 	mSpeaker2Node->attachObject(model2);
-	mSpeaker2Node->setPosition(Ogre::Vector3(20.0f, 0.0f, 0.0f));
-	mSpeaker2Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2);
+	mSpeaker2Node->setPosition(Ogre::Vector3(20.0f, 0.2f * delta, 0.0f));
+	mSpeaker2Node->setScale(Ogre::Vector3::UNIT_SCALE * 0.2f);
+
+
 	//LISTENER
 	Ogre::SceneNode* n = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::Entity* ent = mSceneMgr->createEntity("Sinbad", "Sinbad.mesh");
-	n->scale(Ogre::Vector3::UNIT_SCALE * 5);
 	n->attachObject(ent);
+	n->scale(Ogre::Vector3::UNIT_SCALE * 5.0f);
+	Ogre::Real h = Ogre::Math::Abs (ent->getBoundingBox().getMinimum().y);//.getHalfSize().y;
+	n->translate(Ogre::Vector3 (0.0f,h * 5.0f,0.0f));
+
+	mSinbadAnimation = ent->getAnimationState("Dance");
+	mSinbadAnimation->setEnabled(true);
 
 	new GAS::GameAudioWrapper();
 
@@ -181,6 +215,8 @@ bool GASRendering::frameRenderingQueued(const Ogre::FrameEvent& evt)
     //Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
+
+	mSinbadAnimation->addTime(evt.timeSinceLastFrame);
 
 	Ogre::Vector3 traslation(0.0f,0.0f,0.0f);
 	float delta = 50.0f;

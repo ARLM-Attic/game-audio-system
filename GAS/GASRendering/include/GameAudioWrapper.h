@@ -40,8 +40,10 @@ public:
 
 	void SetPitch(int iSourceId, ALfloat iVal);
 	void SetGain(int iSourceId, ALfloat iVal);
-	ALfloat GetPitch(int iSourceId);
-	ALfloat GetGain(int iSourceId);
+	ALfloat GetPitch(int iSourceId)const;
+	ALfloat GetGain(int iSourceId)const;
+
+	ALfloat GetFloatProperty(int iSourceId, ALenum iProp)const;
 	//--------------------------------------------------
 	void SetListenerPosition(const ALfloat iX,const ALfloat iY,const ALfloat iZ);
 	void SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ);

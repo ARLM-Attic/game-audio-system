@@ -45,8 +45,10 @@ protected:
 	virtual void buttonHit(OgreBites::Button* button);
 	virtual void sliderMoved(OgreBites::Slider* slider);
 	virtual void checkBoxToggled(OgreBites::CheckBox* box);
+
 	//------------SOUND
 //	GAS::GameAudioWrapper mAudioWrapper;
+	Ogre::AnimationState *mSinbadAnimation;
 	Ogre::SceneNode* mSpeaker1Node;
 	Ogre::SceneNode* mSpeaker2Node;
 	GAS::GameAudioObject *mSpeaker1;
@@ -64,6 +66,8 @@ protected:
 	OgreBites::Slider* mSpeaker1PitchSlider;
 	OgreBites::Slider* mSpeaker1GainSlider;
 	OgreBites::CheckBox *mSpeaker1LoopCheckbox;
+	OgreBites::Slider *mSpeaker1RolloffSlider;
+	OgreBites::Slider *mSpeaker1ReferenceDistanceSlider;
 
 	OgreBites::Label* mSpeaker2Label;	
 	OgreBites::Button*		mSpeaker2PlayButton;
@@ -72,6 +76,9 @@ protected:
 	OgreBites::Slider* mSpeaker2PitchSlider;
 	OgreBites::Slider* mSpeaker2GainSlider;
 	OgreBites::CheckBox *mSpeaker2LoopCheckbox;
+	OgreBites::Slider *mSpeaker2RolloffSlider;
+	OgreBites::Slider *mSpeaker2ReferenceDistanceSlider;
+
 };
 
 #endif // #ifndef __GASRendering_h_

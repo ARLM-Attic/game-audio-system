@@ -169,6 +169,7 @@ int GameAudioWrapper::CreateSource(const std::string& iFileName, const std::stri
 	alSourcef( mAudioSources[sourceId], AL_GAIN, iDesc.gain );
 	alSourcef( mAudioSources[sourceId], AL_PITCH, iDesc.pitch );
 	alSourcef( mAudioSources[sourceId], AL_REFERENCE_DISTANCE, iDesc.reference_distance );
+	alSourcef( mAudioSources[sourceId], AL_REFERENCE_DISTANCE, iDesc.rolloff );
 	mUsedSources.set(sourceId);
 
 	if (CheckErrors("GameAudioWrapper::CreateSource"))
@@ -441,21 +442,27 @@ void GameAudioWrapper::SetGain(int iSourceId, ALfloat iVal)
 	alSourcef( mAudioSources[iSourceId], AL_GAIN, iVal );
 	
 }
-ALfloat GameAudioWrapper::GetPitch(int iSourceId)
+ALfloat GameAudioWrapper::GetPitch(int iSourceId)const
 {
 	ALfloat pitch = 0.0f;
 	alGetSourcef(mAudioSources[iSourceId], AL_PITCH, &pitch);
 
 	return pitch;
 }
-ALfloat GameAudioWrapper::GetGain(int iSourceId)
+ALfloat GameAudioWrapper::GetGain(int iSourceId)const
 {
 	ALfloat gain = 0.0f;
 	alGetSourcef(mAudioSources[iSourceId], AL_GAIN, &gain);
 
 	return gain;
 }
-	
+ALfloat GameAudioWrapper::GetFloatProperty(int iSourceId, ALenum iProp)const
+{
+	ALfloat prop = 0.0f;
+	alGetSourcef(mAudioSources[iSourceId], iProp, &prop);
+
+	return prop;
+}
 void GameAudioWrapper::SetSourcePosition(int iSourceId, const ALfloat iX,const ALfloat iY,const ALfloat iZ)
 {
 	alSource3f(mAudioSources[iSourceId], AL_POSITION, iX,iY,iZ);
